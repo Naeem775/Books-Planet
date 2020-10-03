@@ -3,7 +3,6 @@ const APIError = require('../utils/APIError');
 // Handling Duplicate Field Errors
 const duplicateFieldError = err => {
     const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
-    console.log(value)
     const message = `duplicate filed value: ${value} Please use another value`;
     return new APIError(message,400);
 }
@@ -44,7 +43,7 @@ const sendProdError = (err,res) => {
     // not trusted and unknown programming errors, don't leak information
     }else{
         // log the error in hosting platform
-        console.error(error);
+        console.error(err);
        
         // Send a generic message
         res.status(500).json({
@@ -64,9 +63,8 @@ const errorHandler = (err,req,res,next) => {
         let error = { ...err }
         error.message = err.message;
         error.name = err.name;
-
         // Checking Errors
-        if(error.name = 'CastError') error = castError (error);
+        if(error.name === 'CastError') error = castError (error);
         if(error.code === 11000) error = duplicateFieldError(error);
         if (error.name === 'ValidationError') error = ValidationErrorDB(error);
         
