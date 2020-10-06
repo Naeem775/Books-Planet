@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/userRoutes');
+const bookRouter = require('./routes/bookRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const APIError = require('./utils/APIError');
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended:true}));
 
 // Mounting Routes
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/book', bookRouter);
 
 // Error for undefined routes
 app.all('*', (req,res,next) => {

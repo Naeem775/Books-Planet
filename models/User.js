@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -40,7 +41,9 @@ const userSchema = new mongoose.Schema({
         enum:['user','moderator','admin'],
         required:[true,'A user must have a role'],
         default: 'user'
-    }
+    },
+    resetPasswordToken: String,
+    resetTokenExpires: Date
 });
 
 userSchema.pre('save', async function(next) {
@@ -55,5 +58,19 @@ userSchema.pre('save', async function(next) {
 
     next()
 });
+ 
+// Creating Password Reset Token for forgot Password
+userSchema.methods.passwordResetToken = function(){
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    console.log({resetToken},this.resetPasswordToken );
+
+    this.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken;
+}
+
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,5 +1,11 @@
 const APIError = require('../utils/APIError');
 
+// Handling JSON web token error for invalid signature
+const JsonWebTokenError = err => new APIError('Invalid token,Please log in again',401);
+
+// Handling Expired Token Error
+const TokenExpiredError = err => new APIError('Your token has expired,Please log in again', 401);
+
 // Handling Duplicate Field Errors
 const duplicateFieldError = err => {
     const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
@@ -67,6 +73,8 @@ const errorHandler = (err,req,res,next) => {
         if(error.name === 'CastError') error = castError (error);
         if(error.code === 11000) error = duplicateFieldError(error);
         if (error.name === 'ValidationError') error = ValidationErrorDB(error);
+        if(error.name === 'JsonWebTokenError') error = JsonWebTokenError(error);
+        if(error.name === 'TokenExpiredError') error = TokenExpiredError(error);
         
         sendProdError(error,res);
     }
