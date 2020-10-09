@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bookSchema = new mongoose.Schema({
     title:{
         type:String,
-        required:[true,'A book titles is required'],
+        required:[true,'A book title is required'],
         unique:true
     },
     isbn:{
@@ -31,7 +31,19 @@ const bookSchema = new mongoose.Schema({
         type:String,
         required:[true,'A book description is required']
     },
-    website:String
+    website:String,
+    price:{
+        type: Number,
+        required:[true, 'A book must have a price']
+    },
+    categories:{
+        type: Array,
+        required: [true, 'A book must belong to a category']
+    },
+    createdAt:{
+        type: Date,
+        default: Date.now()
+    }
 });
 
 module.exports = mongoose.model('Book',bookSchema);
