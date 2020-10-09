@@ -42,6 +42,11 @@ const userSchema = new mongoose.Schema({
         required:[true,'A user must have a role'],
         default: 'user'
     },
+    active:{
+        type:Boolean,
+        default: true,
+        select: false
+    },
     resetPasswordToken: String,
     resetTokenExpires: Date
 });
@@ -59,6 +64,12 @@ userSchema.pre('save', async function(next) {
     next()
 });
  
+userSchema.pre(/^find/, function(next) {
+    // This points to the current query
+    this.find({active: {$ne: false}});
+    next();
+})
+
 // Creating Password Reset Token for forgot Password
 userSchema.methods.passwordResetToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
