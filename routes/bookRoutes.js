@@ -7,7 +7,7 @@ router.route('/')
       .get(getAllBooks)
       .post(protect,restrictTo('admin', 'moderator'),addBook);
 
-router.route('/:bookId')
+router.route('/:id')
       .get(getBook)
       .patch(protect,restrictTo('admin','moderator'),updateBook)
       .delete(protect,restrictTo('admin'), deleteBook);

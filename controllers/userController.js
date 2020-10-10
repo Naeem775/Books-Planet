@@ -1,6 +1,7 @@
 const APIError = require('../utils/APIError');
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/User');
+const factory = require('./handlerFactory');
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
@@ -10,6 +11,9 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj;
 }
 
+// * For Users
+
+// Update user data
 exports.updateMe = catchAsync( async (req,res,next) => {
     // 1) Check if user tried to update password
     if(req.body.password || req.body.passwordConfirm){
@@ -33,6 +37,7 @@ exports.updateMe = catchAsync( async (req,res,next) => {
     });
 });
 
+// delete user accounts
 exports.deleteMe = catchAsync( async (req,res,next) => {
     await User.findByIdAndUpdate(req.user.id, {active:false});
 
@@ -42,14 +47,13 @@ exports.deleteMe = catchAsync( async (req,res,next) => {
     });
 });
 
-exports.getAllUsers = catchAsync(async (req,res,next) => {
-    const users = await User.find();
+// * For Administrators
 
-    res.status(200).json({
-        Users: users.length,
-        status:'Success',
-        data:{
-            users
-        }
-    });
-});
+// To get All users
+exports.getAllUsers = factory.getAll(User);
+
+// To get a Single user
+exports.getUser = factory.getOne(User);
+
+// To Delete user
+exports.deleteUser = factory.deleteOne(User);
