@@ -37,6 +37,12 @@ exports.updateMe = catchAsync( async (req,res,next) => {
     });
 });
 
+// Get Data of the current logged in user
+exports.getMe = (req,res,next) => {
+    req.params.id = req.user.id
+    next();
+}
+
 // delete user accounts
 exports.deleteMe = catchAsync( async (req,res,next) => {
     await User.findByIdAndUpdate(req.user.id, {active:false});

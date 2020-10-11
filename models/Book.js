@@ -57,6 +57,8 @@ const bookSchema = new mongoose.Schema({
 }
 );
 
+bookSchema.index({price:1});
+
 // Virtual Populate
 bookSchema.virtual('reviews',{
     ref:'Review',

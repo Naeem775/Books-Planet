@@ -4,13 +4,16 @@ const APIFeatures = require('../utils/ApiFeatures');
 
 // Get All Documents
 exports.getAll = Model => catchAsync( async (req,res,next) => {
-    const features = new APIFeatures(Model.find(), req.query)
+    // To allow for nested GET reviews on Books
+    let filter = {};
+     if(req.params.bookId) filter = {book: req.params.bookId};
+    const features = new APIFeatures(Model.find(filter), req.query)
         .filter()
         .sort()
         .limitFields()
         .paginate();
-    const doc = await features.query;
-
+        // const doc = await features.query.explain();
+        const doc = await features.query.explain();
     res.status(200).json({
         results: doc.length,
         status:'Success',

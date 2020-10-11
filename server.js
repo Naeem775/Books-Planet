@@ -44,9 +44,9 @@ app.use(xss());
 app.use(hpp());
 
 // Mounting Routes
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/book', bookRouter);
-app.use('/api/v1/review', reviewRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/books', bookRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 // Error for undefined routes
 app.all('*', (req,res,next) => {
