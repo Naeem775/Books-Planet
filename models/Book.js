@@ -50,6 +50,18 @@ const bookSchema = new mongoose.Schema({
         max: 5,
         min: 1
     }
+},
+{
+    toJSON:{virtuals:true},
+    toObject:{virtuals:true}
+}
+);
+
+// Virtual Populate
+bookSchema.virtual('reviews',{
+    ref:'Review',
+    foreignField:'book',
+    localField:'_id'
 });
 
 module.exports = mongoose.model('Book',bookSchema);

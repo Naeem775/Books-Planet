@@ -1,3 +1,4 @@
+
 const Book = require('../models/Book');
 const APIError = require('../utils/APIError');
 const catchAsync = require('../utils/catchAsync');
@@ -8,7 +9,7 @@ const factory = require('./handlerFactory');
 exports.getAllBooks = factory.getAll(Book);
 
 // Get Single Book
-exports.getBook = factory.getOne(Book);
+exports.getBook = factory.getOne(Book, {path: 'reviews'});
 
 // Add/Create book
 exports.addBook = factory.createOne(Book);

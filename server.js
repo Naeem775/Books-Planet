@@ -10,6 +10,7 @@ const hpp = require('hpp');
 // Routes and middleware
 const userRouter = require('./routes/userRoutes');
 const bookRouter = require('./routes/bookRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const APIError = require('./utils/APIError');
 
@@ -45,6 +46,7 @@ app.use(hpp());
 // Mounting Routes
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/book', bookRouter);
+app.use('/api/v1/review', reviewRouter);
 
 // Error for undefined routes
 app.all('*', (req,res,next) => {

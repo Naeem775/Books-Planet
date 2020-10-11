@@ -21,8 +21,11 @@ exports.getAll = Model => catchAsync( async (req,res,next) => {
 });
 
 // Get single Document
-exports.getOne = Model => catchAsync(async (req,res,next) => {
-    const doc = await Model.findById(req.params.id);
+exports.getOne = (Model,popOptions) => catchAsync(async (req,res,next) => {
+    let query = Model.findById(req.params.id);
+    // console.log(popOptions)
+    if(popOptions) query = query.populate(popOptions);
+    const doc = await query;
     if(!doc){
         return next(new APIError('No document found with this ID:',404));
         } 
